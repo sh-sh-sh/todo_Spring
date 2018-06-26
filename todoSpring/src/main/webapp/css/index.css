@@ -1,0 +1,190 @@
+@charset "UTF-8";
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700);
+
+html {
+    width: 100%;
+    min-height: 100%;
+    padding:10px;
+  }
+  
+  body {
+    background: -webkit-linear-gradient(45deg, rgba(77, 110, 219, 0.8) 0%, rgba(114, 243, 189, 0.61) 50%,rgba(206, 238, 119, 0.8) 100%);
+    background: linear-gradient(45deg, rgba(77, 110, 219, 0.8) 0%, rgba(114, 243, 189, 0.61) 50%,rgba(206, 238, 119, 0.8) 100%);
+    color: rgba(0, 0, 0, 0.6);
+    font-family: "Lato", sans-serif;
+    font-size: 14px;
+    line-height: 1.6em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .container2 {
+  	padding:10px;
+    text-align: center;
+    z-index: 15;
+    position: relative;
+    background: rgba(255, 255, 255, 0.466);
+    max-width: 600px;
+    border-radius: 4px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.281);
+    box-sizing: border-box;
+    margin: 100px auto 10px;
+    overflow: hidden;
+  }
+  
+  .container3 {
+    padding:10px;
+    text-align: center;
+    z-index: 15;
+    position: relative;
+    background: rgba(255, 255, 255, 0.466);
+    max-width: 700px;
+    border-radius: 4px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.281);
+    box-sizing: border-box;
+    margin: 40px auto 10px;
+    overflow: hidden;
+  }
+  
+    .container4 {
+    padding:10px;
+    text-align: center;
+    z-index: 15;
+    position: relative;
+    background: rgba(255, 255, 255, 0.466);
+    max-width: 1000px;
+    border-radius: 4px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.281);
+    box-sizing: border-box;
+    margin: 50px auto 10px;
+    overflow: hidden;
+  }
+
+  h1 {
+    padding: 50px 10px 10px 10px;
+    font-size: 50px;
+    font-weight: 700;
+    margin-bottom: 23px;
+    text-align: center;
+    text-indent: 6px;
+    text-transform: uppercase;
+    color: #263238;
+  }
+  
+    h2 {
+    padding: 50px 10px 10px 10px;
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 23px;
+    text-align: center;
+    text-indent: 6px;
+    text-transform: uppercase;
+    color: #263238;
+  }
+
+  .inputcss{
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    box-sizing: border-box;
+    display: block;
+    line-height: 1.42857;
+    margin-right: -15px;
+    margin-left: -15px;
+    float: left;
+  }
+
+  table{
+    background-color: rgba(255, 255, 255, 0.466)
+  }
+  
+  .ha {
+    letter-spacing: 7px;
+  }
+
+  p{
+    font-size: 20px;
+      padding:20px;
+      color: #263238;
+  }
+  h1 {
+    -moz-animation: slideIn 1s cubic-bezier(0.37, 0.82, 0.2, 1);
+    -webkit-animation: slideIn 1s cubic-bezier(0.37, 0.82, 0.2, 1);
+    animation: slideIn 1s cubic-bezier(0.37, 0.82, 0.2, 1);
+  }
+  h2 {
+    -moz-animation: slideIn 1s cubic-bezier(0.37, 0.82, 0.2, 1);
+    -webkit-animation: slideIn 1s cubic-bezier(0.37, 0.82, 0.2, 1);
+    animation: slideIn 1s cubic-bezier(0.37, 0.82, 0.2, 1);
+  }
+  p {
+    -moz-animation: slideIn 1.5s cubic-bezier(0.37, 0.82, 0.2, 1);
+    -webkit-animation: slideIn 1.5s cubic-bezier(0.37, 0.82, 0.2, 1);
+    animation: slideIn 1.5s cubic-bezier(0.37, 0.82, 0.2, 1);
+  }
+
+  @keyframes slideIn {
+    0% {
+      filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+      opacity: 0;
+      margin-left: -320px;
+    }
+    100% {
+      filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
+      opacity: 1;
+      margin-left: 0px;
+    }
+  }
+  @-webkit-keyframes slideIn {
+    0% {
+      filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+      opacity: 0;
+      margin-left: -320px;
+    }
+    100% {
+      filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
+      opacity: 1;
+      margin-left: 0px;
+    }
+    
+  }
+
+  @media(max-width:768px){
+    h1 {
+      padding: 15px 5px 5px 5px;
+      font-size: 3em;
+      font-weight: 800;
+      margin-bottom: 23px;
+      text-align: center;
+      text-indent: 6px;
+      text-transform: uppercase;
+      color: #263238;
+    }
+    .container3 {
+      padding:10px;
+      text-align: center;
+      z-index: 15;
+      position: relative;
+      background: rgba(255, 255, 255, 0.466);
+      max-width: 700px;
+      border-radius: 4px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.281);
+      box-sizing: border-box;
+      margin: 0;
+      overflow: hidden;
+    }
+    .container2 {
+      padding:10px;
+      text-align: center;
+      z-index: 15;
+      position: relative;
+      background: rgba(255, 255, 255, 0.466);
+      max-width: 700px;
+      border-radius: 4px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.281);
+      box-sizing: border-box;
+      margin: 0;
+      overflow: hidden;
+    }
+  }
+}
