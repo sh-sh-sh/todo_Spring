@@ -20,4 +20,5 @@ public interface UserDAO {
 	
 	public String getPW(String id);
 	//id에 해당하는 유저의 비밀번호 반환
+	
 }

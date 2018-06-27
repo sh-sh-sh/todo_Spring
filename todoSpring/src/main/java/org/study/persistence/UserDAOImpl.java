@@ -24,12 +24,12 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public boolean deleteUser(String id) {
-		return (session.insert(name+".delete", id)==1)?true:false;
+		return (session.delete(name+".delete", id)==1)?true:false;
 	}
 
 	@Override
 	public boolean updateUser(UserVO user) {
-		return (session.insert(name+".update", user)==1)?true:false;
+		return (session.update(name+".update", user)==1)?true:false;
 	}
 
 	@Override
@@ -41,7 +41,5 @@ public class UserDAOImpl implements UserDAO {
 	public String getPW(String id) {
 		return session.selectOne(name+".getPW", id);
 	}
-
-	
 
 }

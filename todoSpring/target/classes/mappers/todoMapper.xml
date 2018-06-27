@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="org.study.todoSpring.mappers.todoMapper">
+
+	<select id="todoCount" resultType="int">
+		SELECT count(*) FROM todo WHERE user_id = #{id}
+	</select>
+	
+	<select id="doneCount" resultType="int">
+		SELECT count(*) FROM todo WHERE done=true AND user_id = #{id}
+	</select>
+	
+	<insert id="insert">
+		insert into todo (user_id, category, title, content,start_date,target_date)
+		values (#{user_id}, #{category}, #{title}, #{content}, #{start_date}, #{target_date})
+	</insert>
+	
+	<select id="getTodo" resultType="org.study.model.TodoVO">
+		SELECT * FROM todo WHERE idx = #{idx}
+	</select>
+	
+	<delete id="delete">
+		DELETE FROM todo WHERE idx = #{idx}
+	</delete>
+	
+	<update id="update">
+		UPDATE todo SET category = #{category}, title = #{title}, content = #{content}, start_date = #{start_date}, target_date = #{target_date} WHERE idx = #{idx}
+	</update>
+	
+	<update id="updateDone">
+		UPDATE todo SET done = #{done} WHERE idx = #{idx}
+	</update>
+	
+	
+	
+	
+	<select id="listToday" resultType="org.study.model.TodoVO">
+		<![CDATA[
+		SELECT * FROM todo WHERE 
+		DATE(start_date) <= DATE(NOW()) AND DATE(target_date) >= DATE(NOW()) "
+		AND user_id = #{user_id} limit #{page},10
+		]]>
+	</select>
+	
+	<select id="listWeek" resultType="org.study.model.TodoVO">
+		<![CDATA[
+		SELECT * FROM todo WHERE 
+		YEARWEEK(DATE(start_date+interval -1 day)) <= YEARWEEK(DATE(now()+interval -1 day)) 
+		AND YEARWEEK(DATE(target_date+interval -1 day)) >= YEARWEEK(DATE(now()+interval -1 day)) 
+		AND user_id = #{user_id} limit #{page},10
+		]]>
+	</select>
+	
+	<select id="listMonth" resultType="org.study.model.TodoVO">
+		<![CDATA[
+		SELECT * FROM todo WHERE YEAR(start_date) = YEAR(now()) 
+		AND YEAR(target_date) = YEAR(now()) 
+		AND MONTH(start_date) <= MONTH(now()) 
+		AND MONTH(target_date) >= MONTH(now()) 
+		AND user_id = #{user_id} limit #{page},10
+		]]>
+	</select>
+	
+	<select id="listDone" resultType="org.study.model.TodoVO">
+		<![CDATA[
+		SELECT * FROM todo WHERE done=true AND user_id = #{user_id} limit #{page},10
+		]]>
+	</select>
+	
+	<select id="listUndone" resultType="org.study.model.TodoVO">
+		<![CDATA[
+		SELECT * FROM todo WHERE done=false AND user_id = #{user_id} limit #{page},10
+		]]>
+	</select>
+	
+	<select id="listAll" resultType="org.study.model.TodoVO">
+		<![CDATA[
+		SELECT * FROM todo WHERE user_id = #{user_id} limit #{page},10
+		]]>
+	</select>
+	
+	
+	
+	
+	
+	<select id="maxpageToday" resultType="int">
+		<![CDATA[
+		SELECT count(*) FROM todo WHERE 
+		DATE(start_date) <= DATE(NOW()) AND DATE(target_date) >= DATE(NOW()) 
+		AND user_id = #{id}
+		]]>
+	</select>
+	
+	<select id="maxpageWeek" resultType="int">
+		<![CDATA[
+		SELECT count(*) FROM todo WHERE 
+		YEARWEEK(DATE(start_date+interval -1 day)) <= YEARWEEK(DATE(now()+interval -1 day)) 
+		AND YEARWEEK(DATE(target_date+interval -1 day)) >= YEARWEEK(DATE(now()+interval -1 day)) 
+		AND user_id = #{id}
+		]]>
+	</select>
+	
+	<select id="maxpageMonth" resultType="int">
+		<![CDATA[
+		SELECT count(*) FROM todo WHERE YEAR(start_date) = YEAR(now()) 
+		AND YEAR(target_date) = YEAR(now()) 
+		AND MONTH(start_date) <= MONTH(now()) 
+		AND MONTH(target_date) >= MONTH(now()) 
+		AND user_id = #{id}
+		]]>
+	</select>
+	
+	<select id="maxpageDone" resultType="int">
+		SELECT count(*) FROM todo WHERE done=true AND user_id = #{id}
+	</select>
+	
+	<select id="maxpageUndone" resultType="int">
+		SELECT count(*) FROM todo WHERE done=false AND user_id = #{id}
+	</select>
+	
+	<select id="maxpageAll" resultType="int">
+		SELECT count(*) FROM todo WHERE user_id = #{id}
+	</select>
+	
+	
+	
+	
+	<select id="getCateName" resultType="String">
+		SELECT name FROM todo_category WHERE cat_id = #{cat_id}
+	</select>
+	
+	
+	
+	
+	
+	<select id="doneRateToday" resultType="int">
+		<![CDATA[
+		SELECT ROUND(
+		(SELECT count(*) FROM todo WHERE done=true 
+		AND DATE(start_date) <= DATE(NOW()) 
+		AND DATE(target_date) >= DATE(NOW()) 
+		AND user_id = #{id})
+		*100/
+		(SELECT count(*) FROM todo WHERE 
+		DATE(start_date) <= DATE(NOW()) 
+		AND DATE(target_date) >= DATE(NOW()) AND user_id =#{id})) 
+		AS result
+		]]>
+	</select>
+	
+	<select id="doneRateWeek" resultType="int">
+		<![CDATA[
+		SELECT ROUND(
+		(SELECT count(*) FROM todo WHERE done=true AND 
+		YEARWEEK(DATE(start_date+interval -1 day)) <= YEARWEEK(DATE(now()+interval -1 day)) 
+		AND YEARWEEK(DATE(target_date+interval -1 day)) >= YEARWEEK(DATE(now()+interval -1 day)) 
+		AND user_id = #{id})
+		*100/
+		(SELECT count(*) FROM todo WHERE 
+		YEARWEEK(DATE(start_date+interval -1 day)) <= YEARWEEK(DATE(now()+interval -1 day)) 
+		AND YEARWEEK(DATE(target_date+interval -1 day)) >= YEARWEEK(DATE(now()+interval -1 day)) 
+		AND user_id = #{id})) 
+		AS result
+		]]>
+	</select>
+	
+	<select id="doneRateMonth" resultType="int">
+		<![CDATA[
+		SELECT ROUND(
+		(SELECT count(*) FROM todo WHERE done=true 
+		AND YEAR(start_date) = YEAR(now()) 
+		AND YEAR(target_date) = YEAR(now()) 
+		AND MONTH(start_date) <= MONTH(now()) 
+		AND MONTH(target_date) >= MONTH(now()) 
+		AND user_id = #{id})
+		*100/
+		(SELECT count(*) FROM todo WHERE
+		 YEAR(start_date) = YEAR(now()) 
+		AND YEAR(target_date) = YEAR(now()) 
+		AND MONTH(start_date) <= MONTH(now()) 
+		AND MONTH(target_date) >= MONTH(now()) 
+		AND user_id = #{id}))
+		AS result
+		]]>
+	</select>
+	
+	<select id="doneRateAll" resultType="int">
+		SELECT ROUND(
+		(SELECT count(*) FROM todo WHERE done=true AND user_id = #{id})
+		*100/
+		(SELECT count(*) FROM todo WHERE user_id = #{id}))
+		 AS result
+	</select>
+	
+	
+	<select id="isCorrectUser" resultType="int">
+		SELECT STRCMP(#{user_id}, (SELECT user_id FROM todo WHERE idx = #{idx}))
+	</select>
+	
+	
+</mapper>

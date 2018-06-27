@@ -11,15 +11,7 @@
 <script src="./js/bootstrap.min.js"></script>
 <script src="./js/jquery.min.js"></script>
 <link rel="stylesheet" href="/../css/login.css">
-<% Cookie[] cookie= request.getCookies();
-	String id=null;
-	if(cookie!=null){
-		for(int i=0;i<cookie.length;i++){
-			if(cookie[i].getName().equals("id")){
-				id=cookie[i].getValue();
-			}
-		}
-	}%>
+<% String id=(String)request.getAttribute("TodoNum");%>
 <body>
 <section class="container-login">
   <article class="half">

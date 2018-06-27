@@ -16,8 +16,8 @@
 <div class="container4">
 	<div class="starter-template">
 			<h1>${name}님, <br>가입하신 것을 환영합니다!</h1>
-					<p><a href="index.jsp"><input type="button" value="홈" class="btn btn-sm btn-Primary"></a>
-					<a href="login.jsp"><input type="button" value="로그인" class="btn btn-sm btn-info"></a></p>
+					<p><a href="/"><input type="button" value="홈" class="btn btn-sm btn-Primary"></a>
+					<a href="/login"><input type="button" value="로그인" class="btn btn-sm btn-info"></a></p>
       </div>
     </div><!-- /.container -->
 </body>

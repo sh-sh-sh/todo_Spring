@@ -1,5 +1,12 @@
 package org.study.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.study.service.TodoService;
+
 public class TodoVO {
 	private int idx;
 	private String user_id;
@@ -11,8 +18,12 @@ public class TodoVO {
 	private String create_date;
 	private boolean done;
 	
-//	private TodoService service=new TodoDaoImpl();
+	private int page;
 	
+	@Autowired
+	private TodoService service;
+	
+
 	public TodoVO(int idx, String user_id, int category, String title, String content, String start_date,
 			String target_date, String create_date, boolean done) {
 		super();
@@ -45,9 +56,11 @@ public class TodoVO {
 	public int getCategory() {
 		return category;
 	}
-//	public String getCateName() {
-//		return service.getCateName(category);
-//	}
+	public String getCateName() {
+		System.out.println("카테고리번호5:"+category);
+		System.out.println("서비스테스트:"+service);
+		return service.getCateName(category);
+	}
 	public void setCategory(int category) {
 		this.category = category;
 	}
@@ -69,17 +82,17 @@ public class TodoVO {
 	public void setStart_date(String start_date) {
 		this.start_date = start_date;
 	}
-//	public String getStart_date_listver() {
-//		//리스트에서 날짜까지만 출력하기 위해 잘라서 반환함
-//		return start_date.substring(2,10);
-//	}
+	public String getStart_date_listver() {
+		//리스트에서 날짜까지만 출력하기 위해 잘라서 반환함
+		return start_date.substring(2,10);
+	}
 	public String getTarget_date() {
 		return target_date;
 	}
-//	public String getTarget_date_listver() {
-//		//리스트에서 분까지만 출력하기 위해 target_date를 분까지 잘라 반환함
-//		return target_date.substring(2,16);
-//	}
+	public String getTarget_date_listver() {
+		//리스트에서 분까지만 출력하기 위해 target_date를 분까지 잘라 반환함
+		return target_date.substring(2,16);
+	}
 	public void setTarget_date(String target_date) {
 		this.target_date = target_date;
 	}
@@ -89,18 +102,25 @@ public class TodoVO {
 	public void setCreate_date(String create_date) {
 		this.create_date = create_date;
 	}
-//	public boolean isDone() {
-//		return done;
-//	}
-//	public void setDone(boolean done) {
-//		this.done = done;
-//	}
 	
-//	public boolean getPast() throws ParseException {
-//		//target_date가 현재 시간보다 이전이면 true를 반환함
-//		Date date= new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(getTarget_date());
-//		
-//		return new Date().after(date);
-//	}
+	public boolean isDone() {
+		return done;
+	}
+	public void setDone(boolean done) {
+		this.done = done;
+	}
+	public int getPage() {
+		return page;
+	}
+	public void setPage(int page) {
+		this.page = page;
+	}
+	
+	public boolean getPast() throws ParseException {
+		//target_date가 현재 시간보다 이전이면 true를 반환함
+		Date date= new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(getTarget_date());
+		
+		return new Date().after(date);
+	}
 	
 }

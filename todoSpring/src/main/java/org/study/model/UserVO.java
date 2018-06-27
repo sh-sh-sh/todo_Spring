@@ -6,10 +6,30 @@ public class UserVO {
 	private String name;
 	private String email;
 	private String hashedPW;
+	private String newPW;
+	private String newPWc;
+	
+	public String getNewPW() {
+		return newPW;
+	}
+
+	public void setNewPW(String newPW) {
+		this.newPW = newPW;
+	}
+
+	public String getNewPWc() {
+		return newPWc;
+	}
+
+	public void setNewPWc(String newPWc) {
+		this.newPWc = newPWc;
+	}
+	
 	
 //	private TodoService service=new TodoDaoImpl();
 	
 	
+
 	public UserVO() {
 		super();
 		// TODO 자동 생성된 생성자 스텁

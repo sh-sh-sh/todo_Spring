@@ -2,6 +2,7 @@ package org.study.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.study.model.UserVO;
+import org.study.persistence.TodoDAO;
 import org.study.persistence.UserDAO;
 import org.study.sec.PasswordAuthentication;
 
@@ -13,7 +14,9 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	public UserDAO dao;
 	
-	static int rs;
+	@Autowired
+	public TodoDAO todoDao;
+	
 	final static String ex="\"|<>{}";
 
 	@Override
@@ -61,6 +64,16 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void pwHash(UserVO user) {
 		user.setHashedPW(passAuth.hash(user.getPassword().toCharArray()));
+	}
+
+	@Override
+	public int getTodoNum(String id) {
+		return todoDao.TodoCount(id);
+	}
+
+	@Override
+	public int getDoneNum(String id) {
+		return todoDao.doneCount(id);
 	}
 
 }

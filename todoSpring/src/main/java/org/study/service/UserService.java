@@ -29,4 +29,8 @@ public interface UserService {
 	public void pwHash(UserVO user);
 	//user의 password를 해싱해 hashedPW에 담음
 	
+	public int getTodoNum(String id);
+	
+	public int getDoneNum(String id);
+	
 }

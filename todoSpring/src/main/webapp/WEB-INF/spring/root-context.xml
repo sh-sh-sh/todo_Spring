@@ -13,23 +13,18 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	
-	
 	<bean id="passAuth" class="org.study.sec.PasswordAuthentication"/>
-	<bean id="userService" class="org.study.service.UserServiceImpl"/>
 	<bean id="userDAO" class="org.study.persistence.UserDAOImpl"/>
+	<bean id="todoDAO" class="org.study.persistence.TodoDAOImpl"/>
+	<bean id="userService" class="org.study.service.UserServiceImpl"/>
+	<bean id="todoService" class="org.study.service.TodoServiceImpl"/>
+	
 	
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
-		<!-- <property name="driverClassName" value="com.mysql.jdbc.Driver" /> -->
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url" value="jdbc:mysql://192.168.0.213/todo_db?characterEncoding=utf8" />
 		<property name="username" value="sh" />
 		<property name="password" value="12341234" />
-		<!-- <property name="connectionProperties" >
-			<props>
-				<prop key="useSSL">no</prop>
-				<prop key="characterEncoding">utf8</prop>
-			</props>
-		</property> -->
 	</bean>	
 	
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">

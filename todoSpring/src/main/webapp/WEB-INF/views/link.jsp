@@ -13,7 +13,7 @@
 	<nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-			expanded="false" aria-controls="navbar">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -25,24 +25,24 @@
           <ul class="nav navbar-nav">
             <li><a href="/">Home</a></li>
 			<%if(session.getAttribute("userid")==null){%>
-			<li><a href="login">로그인</a></li>
+			<li><a href="/login">로그인</a></li>
 			<%}else{%>
-			<li><a href="Profile">프로필</a></li>
+			<li><a href="/user/Profile">프로필</a></li>
 			<li class="dropdown">
-	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">할일 보기<span class="caret"></span></a>
+	          <a href="/#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">할일 보기<span class="caret"></span></a>
 	          <ul class="dropdown-menu" role="menu">
-	            <li><a href="TodoList?page=1&view=all">전체 보기</a></li>
-	            <li><a href="TodoList?page=1&view=today">오늘의 할일</a></li>
-	            <li><a href="TodoList?page=1&view=week">이번주 할일</a></li>
-	            <li><a href="TodoList?page=1&view=month">이번달 할일</a></li>
+	            <li><a href="/todo/list?page=1&view=all">전체 보기</a></li>
+	            <li><a href="/todo/list?page=1&view=today">오늘의 할일</a></li>
+	            <li><a href="/todo/list?page=1&view=week">이번주 할일</a></li>
+	            <li><a href="/todo/list?page=1&view=month">이번달 할일</a></li>
 	            <li class="divider"></li>
-	            <li><a href="TodoList?page=1&view=undone">미완료한 할일</a></li>
+	            <li><a href="/todo/list?page=1&view=undone">미완료한 할일</a></li>
 	            <li class="divider"></li>
-	            <li><a href="TodoList?page=1&view=done">완료한 할일</a></li>
+	            <li><a href="/todo/list?page=1&view=done">완료한 할일</a></li>
 	          </ul>
 	        </li>
-			<li><a href="addTodo">할일 추가</a></li>
-			<li><a href="logout">로그아웃</a></li>
+			<li><a href="/todo/addTodo">할일 추가</a></li>
+			<li><a href="/user/logout">로그아웃</a></li>
 			<%} %>
           </ul>
         </div><!--/.nav-collapse -->
