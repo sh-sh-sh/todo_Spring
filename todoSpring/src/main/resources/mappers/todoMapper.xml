@@ -19,7 +19,8 @@
 	</insert>
 	
 	<select id="getTodo" resultType="org.study.model.TodoVO">
-		SELECT * FROM todo WHERE idx = #{idx}
+		SELECT *, (select td.name from todo_category td where td.cat_id=category) as cate_name 
+		FROM todo WHERE idx = #{idx}
 	</select>
 	
 	<delete id="delete">
@@ -27,7 +28,8 @@
 	</delete>
 	
 	<update id="update">
-		UPDATE todo SET category = #{category}, title = #{title}, content = #{content}, start_date = #{start_date}, target_date = #{target_date} WHERE idx = #{idx}
+		UPDATE todo SET category = #{category}, title = #{title}, content = #{content}, 
+		start_date = #{start_date}, target_date = #{target_date} WHERE idx = #{idx}
 	</update>
 	
 	<update id="updateDone">
@@ -39,16 +41,16 @@
 	
 	<select id="listToday" resultType="org.study.model.TodoVO">
 		<![CDATA[
-		SELECT * FROM todo WHERE 
-		DATE(start_date) <= DATE(NOW()) AND DATE(target_date) >= DATE(NOW()) "
+		SELECT *, (select td.name from todo_category td where td.cat_id=category) as cate_name FROM todo 
+		WHERE DATE(start_date) <= DATE(NOW()) AND DATE(target_date) >= DATE(NOW())
 		AND user_id = #{user_id} limit #{page},10
 		]]>
 	</select>
 	
 	<select id="listWeek" resultType="org.study.model.TodoVO">
 		<![CDATA[
-		SELECT * FROM todo WHERE 
-		YEARWEEK(DATE(start_date+interval -1 day)) <= YEARWEEK(DATE(now()+interval -1 day)) 
+		SELECT *, (select td.name from todo_category td where td.cat_id=category) as cate_name FROM todo 
+		WHERE YEARWEEK(DATE(start_date+interval -1 day)) <= YEARWEEK(DATE(now()+interval -1 day)) 
 		AND YEARWEEK(DATE(target_date+interval -1 day)) >= YEARWEEK(DATE(now()+interval -1 day)) 
 		AND user_id = #{user_id} limit #{page},10
 		]]>
@@ -56,8 +58,8 @@
 	
 	<select id="listMonth" resultType="org.study.model.TodoVO">
 		<![CDATA[
-		SELECT * FROM todo WHERE YEAR(start_date) = YEAR(now()) 
-		AND YEAR(target_date) = YEAR(now()) 
+		SELECT *, (select td.name from todo_category td where td.cat_id=category) as cate_name FROM todo 
+		WHERE YEAR(start_date) = YEAR(now()) AND YEAR(target_date) = YEAR(now()) 
 		AND MONTH(start_date) <= MONTH(now()) 
 		AND MONTH(target_date) >= MONTH(now()) 
 		AND user_id = #{user_id} limit #{page},10
@@ -66,19 +68,22 @@
 	
 	<select id="listDone" resultType="org.study.model.TodoVO">
 		<![CDATA[
-		SELECT * FROM todo WHERE done=true AND user_id = #{user_id} limit #{page},10
+		SELECT *, (select td.name from todo_category td where td.cat_id=category) as cate_name FROM todo 
+		WHERE done=true AND user_id = #{user_id} limit #{page},10
 		]]>
 	</select>
 	
 	<select id="listUndone" resultType="org.study.model.TodoVO">
 		<![CDATA[
-		SELECT * FROM todo WHERE done=false AND user_id = #{user_id} limit #{page},10
+		SELECT *, (select td.name from todo_category td where td.cat_id=category) as cate_name FROM todo 
+		WHERE done=false AND user_id = #{user_id} limit #{page},10
 		]]>
 	</select>
 	
 	<select id="listAll" resultType="org.study.model.TodoVO">
 		<![CDATA[
-		SELECT * FROM todo WHERE user_id = #{user_id} limit #{page},10
+		SELECT *, (select td.name from todo_category td where td.cat_id=category) as cate_name FROM todo 
+		WHERE user_id = #{user_id} limit #{page},10
 		]]>
 	</select>
 	

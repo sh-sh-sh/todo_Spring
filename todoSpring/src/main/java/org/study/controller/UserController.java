@@ -1,16 +1,20 @@
 package org.study.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -89,11 +93,11 @@ public class UserController extends ControllerUtil {
 		}
 		
 		if(!service.updateUser(user)) {//업데이트
-			logger.warn("프로필 수정 시도 - 정보를 수정하지 못함");
+			logger.warn("프로필 수정 시도 - 정보를 수정하지 못함:"+id);
 			session.setAttribute("error", "정보를 수정하지 못했습니다. 문의 부탁드립니다.");
 			return "redirect:/user/edit";
 		}
-		logger.info("프로필 수정 성공:"+user.getId());
+		logger.info("프로필 수정 성공:"+id);
 		session.setAttribute("msg", "정보를 수정하였습니다.");
 		return "redirect:/user/Profile";
 	}
@@ -142,18 +146,18 @@ public class UserController extends ControllerUtil {
 		logger.info("try Login:"+user.getId());
 		if(!service.isValidUser(user.getId())) {
 			logger.error(" 로그인 시도 - 존재하지 않는 아이디:"+user.getId());
-			model.addAttribute("error", "존재하지 않는 아이디입니다.");
-			return "login";
+			session.setAttribute("error", "존재하지 않는 아이디입니다.");
+			return "redirect:/login";
 		}
 		if(!service.passwordCheck(user.getId(),user.getPassword())) {
 			logger.error(" 로그인 시도 - 패스워드 불일치:"+user.getId());
-			model.addAttribute("error", "패스워드가 일치하지 않습니다.");
-			return "login";
+			session.setAttribute("error", "패스워드가 일치하지 않습니다.");
+			return "redirect:/login";
 		}
 //		if(orgPath.equals("")) {
 //		}
 		session.setAttribute("userid", user.getId());
-		model.addAttribute("name", service.getUser(user.getId()).getName());
+		session.setAttribute("name", service.getUser(user.getId()).getName());
 		
 		Cookie cookie= null;
 		if(remember!=null) {//remember에 체크했을 경우 쿠키에 아이디 저장
@@ -166,6 +170,14 @@ public class UserController extends ControllerUtil {
 			response.addCookie(cookie);
 		}
 		logger.info("로그인 성공:"+user.getId());
+		return "redirect:/welcome";
+	}
+	
+	
+	@RequestMapping(value = "/welcome", method = RequestMethod.GET)
+	public String welcome(HttpSession session,Model model) {
+		model.addAttribute("name", (String)session.getAttribute("name"));
+		session.removeAttribute("name");
 		return "user/welcome";
 	}
 	
@@ -173,21 +185,31 @@ public class UserController extends ControllerUtil {
 	
 	
 	@RequestMapping(value = "/SignUp", method = RequestMethod.POST)
-	public String dologin(UserVO user,Model model) {
+	public String signUp(@Valid UserVO user,BindingResult result,Model model,HttpSession session) {
+		
+		if(result.hasErrors()) {
+			List<ObjectError> list=result.getAllErrors();
+			for(ObjectError error:list) {
+				logger.error(" 가입 시도 - 이메일 형식 불일치:"+user.getId());
+				session.setAttribute("error", error.getDefaultMessage());
+			}
+			return "redirect:/login";
+	      }
+		
 		if(!service.Validation(user)) {
-			logger.error(" try SignUp but Not valid:"+user.getId());
-			model.addAttribute("error", "\",|,<,>,{,}는 입력하실 수 없습니다.");
-			return "login";
+			logger.error("가입 시도 - 유효하지 않는 문자:"+user.getId());
+			session.setAttribute("error", "\",|,<,>,{,}는 입력하실 수 없습니다.");
+			return "redirect:/login";
 		}
 		if(service.isValidUser(user.getId())) {
-			logger.error(" try SignUp but Already existing ID:"+user.getId());
-			model.addAttribute("error", "이미 존재하는 아이디입니다.");
-			return "login";
+			logger.error("가입 시도 - 이미 존재하는 아이디:"+user.getId());
+			session.setAttribute("error", "이미 존재하는 아이디입니다.");
+			return "redirect:/login";
 		}
 		if(!service.addUser(user)) {
-			logger.error(" try SignUp but failed:"+user.getId());
-			model.addAttribute("error", "회원가입에 실패했습니다.");
-			return "login";
+			logger.warn("가입 시도 - 실패:"+user.getId());
+			session.setAttribute("error", "회원가입에 실패했습니다.");
+			return "redirect:/login";
 		}else {
 			logger.info(user.getId()+"signUp Success");
 			model.addAttribute("name",user.getName());
@@ -201,7 +223,7 @@ public class UserController extends ControllerUtil {
 	@RequestMapping(value = "/user/Profile", method = RequestMethod.GET)
 	public String login(HttpSession session,Model model) {
 		readMsg(session,model);
-		logger.info("go Profile");
+//		logger.info("go Profile");
 		id=getid(session);
 		if(!service.isValidUser(id)) {//세션에 저장된 아이디가 존재하지 않을 경우
 			logger.error(" 프로필 접근 실패:"+id);

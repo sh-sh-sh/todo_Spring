@@ -3,17 +3,16 @@ package org.study.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.study.model.TodoVO;
 import org.study.persistence.TodoDAO;
 
-@Repository
 public class TodoServiceImpl implements TodoService {
 	
 	@Autowired
 	public TodoDAO dao;
 	
-
+	final static String ex="\"|<>{}";
+	
 	@Override
 	public boolean addTodo(TodoVO todo) {
 		return dao.insertTodo(todo);
@@ -21,7 +20,11 @@ public class TodoServiceImpl implements TodoService {
 
 	@Override
 	public TodoVO getTodo(int idx) {
-		return dao.getTodo(idx);
+		TodoVO todo=dao.getTodo(idx);
+		todo.setStart_date(todo.getStart_date().substring(0,16));
+		todo.setTarget_date(todo.getTarget_date().substring(0, 16));
+		todo.setCreate_date(todo.getCreate_date().substring(0, 16));
+		return todo;
 	}
 
 	@Override
@@ -53,7 +56,6 @@ public class TodoServiceImpl implements TodoService {
 	@Override
 	public int maxpage(String id, String view) {
 		int rs=dao.maxpage(id, view);
-		System.out.println("rs:"+rs);
 		int maxpage=rs/pager;
 		if(rs%pager!=0) {
 			maxpage++;
@@ -61,14 +63,23 @@ public class TodoServiceImpl implements TodoService {
 		return maxpage;
 	}
 
+	
 	@Override
-	public String getCateName(int cat_id) {
-		System.out.println("테스트1");
-		System.out.println("카테고리테스트1:"+cat_id);
-		String tmp=dao.getCateName(cat_id);
-		System.out.println("테스트2:"+tmp);
-		return tmp;
+	public boolean Validation(TodoVO todo) {
+		for(int i=0;i<ex.length();i++) {
+			if(todo.getTitle().contains(Character.toString(ex.charAt(i)))
+					||todo.getContent().contains(Character.toString(ex.charAt(i)))) {
+				return false;
+			}
+		}
+		return true;
 	}
+	
+//	@Override
+//	public String getCateName(int cat_id) {
+//		String tmp=dao.getCateName(cat_id);
+//		return tmp;
+//	}
 
 	@Override
 	public int doneRate(String id, String view) {
@@ -80,7 +91,7 @@ public class TodoServiceImpl implements TodoService {
 		TodoVO todo=new TodoVO();
 		todo.setUser_id(id);
 		todo.setIdx(todoIdx);
-		return (dao.isCorrectUser(todo)==1)?true:false;
+		return (dao.isCorrectUser(todo)==0)?true:false;
 	}
 
 }

@@ -1,7 +1,6 @@
 package org.study.persistence;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +84,6 @@ public class TodoDAOImpl implements TodoDAO {
 	public int maxpage(String id,String view) {
 		
 		int rs=0;
-		System.out.println(view);
 		switch(view) {
 		case "today":
 			rs=session.selectOne(name+".maxpageToday",id);
@@ -112,11 +110,10 @@ public class TodoDAOImpl implements TodoDAO {
 
 	
 	
-	@Override
-	public String getCateName(int cat_id) {
-		System.out.println("카테고리테스트2:"+cat_id);
-		return session.selectOne(name+".getCateName",cat_id);
-	}
+//	@Override
+//	public String getCateName(int cat_id) {
+//		return session.selectOne(name+".getCateName",cat_id);
+//	}
 
 	
 	

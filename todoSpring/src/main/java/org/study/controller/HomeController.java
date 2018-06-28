@@ -14,31 +14,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-public class HomeController {
+public class HomeController extends ControllerUtil {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(Locale locale,HttpSession session,Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
+		logger.info("새 접속 - 접속 국가 : {}.", locale);
 		
-		String msg=(String)session.getAttribute("msg");
-		String error=(String)session.getAttribute("error");
-		if(msg!=null) {
-			model.addAttribute("msg",msg);
-			session.removeAttribute("msg");
-		}
-		if(error!=null) {
-			model.addAttribute("error",error);
-			session.removeAttribute("error");
-		}
+		readMsg(session, model);
 		
 		return "index";
 	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login(Model model,HttpServletRequest req) {
-		logger.info("go login");
+	public String login(HttpSession session,Model model,HttpServletRequest req) {
+		readMsg(session, model);
 		Cookie[] cookie= req.getCookies();
 		String id=null;
 		if(cookie!=null){

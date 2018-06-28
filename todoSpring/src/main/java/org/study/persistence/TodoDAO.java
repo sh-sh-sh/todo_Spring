@@ -1,7 +1,6 @@
 package org.study.persistence;
 
 import java.util.List;
-import java.util.Map;
 
 import org.study.model.TodoVO;
 
@@ -32,8 +31,8 @@ public interface TodoDAO {
 	public int maxpage(String id,String view);
 	//veiw에 해당하는 id의 할일이 총 몇 페이지인지 반환해줌
 	
-	public String getCateName(int cat_id);
-	//cat_id에 해당하는 카테고리 이름을 반환한다.
+//	public String getCateName(int cat_id);
+//	//cat_id에 해당하는 카테고리 이름을 반환한다.
 	
 	public int doneRate(String id,String view);
 	//view에 해당하는 id의 할일중 몇퍼센트가 완료되었는지 int타입으로 반환함

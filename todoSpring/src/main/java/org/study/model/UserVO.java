@@ -1,9 +1,13 @@
 package org.study.model;
 
+import org.hibernate.validator.constraints.Email;
+
 public class UserVO {
 	private String id;
 	private String password;
 	private String name;
+	
+	@Email(message = "이메일 형식으로 입력해야 합니다.")
 	private String email;
 	private String hashedPW;
 	private String newPW;

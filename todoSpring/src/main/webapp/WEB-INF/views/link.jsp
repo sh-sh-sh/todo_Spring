@@ -29,7 +29,7 @@
 			<%}else{%>
 			<li><a href="/user/Profile">프로필</a></li>
 			<li class="dropdown">
-	          <a href="/#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">할일 보기<span class="caret"></span></a>
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">할일 보기<span class="caret"></span></a>
 	          <ul class="dropdown-menu" role="menu">
 	            <li><a href="/todo/list?page=1&view=all">전체 보기</a></li>
 	            <li><a href="/todo/list?page=1&view=today">오늘의 할일</a></li>
@@ -41,7 +41,7 @@
 	            <li><a href="/todo/list?page=1&view=done">완료한 할일</a></li>
 	          </ul>
 	        </li>
-			<li><a href="/todo/addTodo">할일 추가</a></li>
+			<li><a href="/todo/add">할일 추가</a></li>
 			<li><a href="/user/logout">로그아웃</a></li>
 			<%} %>
           </ul>

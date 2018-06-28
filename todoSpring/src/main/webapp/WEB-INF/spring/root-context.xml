@@ -13,11 +13,13 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	
+	<aop:aspectj-autoproxy/>
+	
 	<bean id="passAuth" class="org.study.sec.PasswordAuthentication"/>
 	<bean id="userDAO" class="org.study.persistence.UserDAOImpl"/>
 	<bean id="todoDAO" class="org.study.persistence.TodoDAOImpl"/>
-	<bean id="userService" class="org.study.service.UserServiceImpl"/>
-	<bean id="todoService" class="org.study.service.TodoServiceImpl"/>
+	<bean id="UserService" class="org.study.service.UserServiceImpl"/>
+	<bean id="TodoService" class="org.study.service.TodoServiceImpl"/>
 	
 	
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">

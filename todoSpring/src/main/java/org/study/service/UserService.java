@@ -1,7 +1,5 @@
 package org.study.service;
 
-import java.util.List;
-
 import org.study.model.UserVO;
 
 public interface UserService {

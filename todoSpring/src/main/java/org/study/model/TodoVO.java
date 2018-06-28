@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.study.service.TodoService;
 
@@ -11,17 +12,16 @@ public class TodoVO {
 	private int idx;
 	private String user_id;
 	private int category;
+	@Length(min = 1,max = 20,message = "제목은 1자 이상 20자 이하여야 합니다.")
 	private String title;
 	private String content;
 	private String start_date;
 	private String target_date;
 	private String create_date;
 	private boolean done;
-	
+	private String cate_name;
 	private int page;
 	
-	@Autowired
-	private TodoService service;
 	
 
 	public TodoVO(int idx, String user_id, int category, String title, String content, String start_date,
@@ -37,9 +37,15 @@ public class TodoVO {
 		this.create_date = create_date;
 		this.done = done;
 	}
+	@Override
+	public String toString() {
+		return "TodoVO [idx=" + idx + ", user_id=" + user_id + ", category=" + category + ", title=" + title
+				+ ", content=" + content + ", start_date=" + start_date + ", target_date=" + target_date
+				+ ", create_date=" + create_date + ", done=" + done + ", cate_name=" + cate_name + ", page=" + page
+				+ "]";
+	}
 	public TodoVO() {
 		super();
-		// TODO 자동 생성된 생성자 스텁
 	}
 	public int getIdx() {
 		return idx;
@@ -55,11 +61,6 @@ public class TodoVO {
 	}
 	public int getCategory() {
 		return category;
-	}
-	public String getCateName() {
-		System.out.println("카테고리번호5:"+category);
-		System.out.println("서비스테스트:"+service);
-		return service.getCateName(category);
 	}
 	public void setCategory(int category) {
 		this.category = category;
@@ -114,6 +115,13 @@ public class TodoVO {
 	}
 	public void setPage(int page) {
 		this.page = page;
+	}
+	
+	public String getCate_name() {
+		return cate_name;
+	}
+	public void setCate_name(String cate_name) {
+		this.cate_name = cate_name;
 	}
 	
 	public boolean getPast() throws ParseException {

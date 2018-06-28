@@ -11,13 +11,13 @@
 <title>TODOLIST</title>
 <jsp:include page="../link.jsp" flush="false"/>
 </head>
-<script src="../../js/jquery.min.js"></script>
-<script src="../../js/bootstrap.min.js"></script>
-<script src="../../js/footable.min.js"></script>
-<link rel="stylesheet" href="../../css/bootstrap.min.css">
-<link rel="stylesheet" href="../../css/theme.css">
-<link rel="stylesheet" href="../../css/index.css">
-<link rel="stylesheet" href="../../css/footable.bootstrap.min.css" />
+<script src="./../js/jquery.min.js"></script>
+<script src="./../js/bootstrap.min.js"></script>
+<script src="./../js/footable.min.js"></script>
+<link rel="stylesheet" href="./../css/bootstrap.min.css">
+<link rel="stylesheet" href="./../css/theme.css">
+<link rel="stylesheet" href="./../css/index.css">
+<link rel="stylesheet" href="./../css/footable.bootstrap.min.css" />
 <style>
 .pageidx{padding: 5px;}
 div {text-align:center}
@@ -26,7 +26,7 @@ max-width:400px;
 margin:10px auto 0 auto;
 text-align: center;
 }
-.haha{
+.haha{ 
 margin:auto;
 max-width:600px;
 }
@@ -70,7 +70,7 @@ String view=request.getParameter("view");
 					 }
 			%>
 			<tr class="row123">
-				<td><span class="label label-default"><%=todo.getCateName()%></span></td><td><a href="Todo.do?idx=<%=todo.getIdx()%>"><%=todo.getTitle()%></a></td>
+				<td><span class="label label-default"><%=todo.getCate_name()%></span></td><td><a href="/todo/view?idx=<%=todo.getIdx()%>"><%=todo.getTitle()%></a></td>
 				<td><%=todo.getStart_date_listver()%></td><td><%=todo.getTarget_date_listver()%></td>
 				<% String done;
 					if(todo.isDone()){
@@ -86,12 +86,12 @@ String view=request.getParameter("view");
 				<td><%=done %></td>
 				<td>
 				<%if(!todo.isDone()){ %>
-				<a href="TodoDone.do?idx=<%=todo.getIdx()%>&done=1"><input type="button" value="완료" class="btn btn-xs btn-success"></a>
+				<a href="/todo/done?idx=<%=todo.getIdx()%>&done=1" type="button" class="btn btn-sm btn-success"><i class="glyphicon glyphicon-check"></i></a>
 				<%}else{ %>
-				<a href="TodoDone.do?idx=<%=todo.getIdx()%>&done=0"><input type="button" value="취소" class="btn btn-xs btn-warning"></a>
+				<a href="/todo/done?idx=<%=todo.getIdx()%>&done=0" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-repeat"></i></a>
 				<%} %>
-				&nbsp;&nbsp;<a href="TodoMod.do?idx=<%=todo.getIdx()%>"><input type="button" value="수정" class="btn btn-xs btn-info"></a>
-				&nbsp;&nbsp;<a href="TodoDel.do?idx=<%=todo.getIdx()%>"><input type="button" value="삭제" class="btn btn-xs btn-danger"></a></td>
+				&nbsp;&nbsp;<a href="/todo/edit?idx=<%=todo.getIdx()%>" type="button" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-pencil"></i></a>
+				&nbsp;&nbsp;<a href="/todo/del?idx=<%=todo.getIdx()%>" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-trash"></i></a></td>
 			</tr>
 			<%} %>
 		</table>
@@ -104,20 +104,20 @@ int maxpage=(Integer)(request.getAttribute("maxpage"));
 int pagestart=1+((a-1)/10)*10;
 if(pagestart!=1){%>
     <li class="page-item">
-      <a class="page-link" href="/TodoList.do?page=<%=pagestart-1%>&view=<%=view%>" aria-label="Previous">
+      <a class="page-link" href="/todo/list?page=<%=pagestart-1%>&view=<%=view%>" aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
         <span class="sr-only">Previous</span>
       </a></li>
 	<%}
 for(int i=pagestart;i<pagestart+10&&i<=maxpage;i++){ 
 	if(a==i){%>
-    <li class="page-item active"><a class="page-link" href="/TodoList.do?page=<%=i%>&view=<%=view%>"><%=i%><span class="sr-only">(current)</span></a></li>
+    <li class="page-item active"><a class="page-link" href="/todo/list?page=<%=i%>&view=<%=view%>"><%=i%><span class="sr-only">(current)</span></a></li>
     <%}else{ %>
-    <li class="page-item"><a class="page-link" href="/TodoList.do?page=<%=i%>&view=<%=view%>"><%=i%></a></li>
+    <li class="page-item"><a class="page-link" href="/todo/list?page=<%=i%>&view=<%=view%>"><%=i%></a></li>
 <%}} 
 if(pagestart+10<=maxpage){%>
     <li class="page-item">
-      <a class="page-link" href="/TodoList.do?page=<%=pagestart+10%>&view=<%=view%>" aria-label="Next">
+      <a class="page-link" href="/todo/list?page=<%=pagestart+10%>&view=<%=view%>" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
         <span class="sr-only">Next</span>
       </a></li>
