@@ -30,6 +30,8 @@ public class HomeController extends ControllerUtil {
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(HttpSession session,Model model,HttpServletRequest req) {
 		readMsg(session, model);
+		
+		//저장된 쿠키가 있으면 아이디를 읽어 모델에 쓴다.
 		Cookie[] cookie= req.getCookies();
 		String id=null;
 		if(cookie!=null){

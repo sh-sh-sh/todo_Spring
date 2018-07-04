@@ -128,17 +128,17 @@ public class TodoController extends ControllerUtil {
 		id=getid(session);
 		
 		if(!service.isCorrectUser(id, idx)) {
-			logger.error("투두 완료 - 올바르지 않은 접근:"+idx);
+			logger.error("Todo 완료 - 올바르지 않은 접근:"+idx);
 			session.setAttribute("error", "올바르지 않은 접근입니다.");
 			return "redirect:/todo/list?page=1&view=all";
 		}
 
 		if(!service.setDone(idx, done)) {
-			logger.warn("투두 완료 - : 실패"+idx);
+			logger.warn("Todo 완료 - : 실패"+idx);
 			session.setAttribute("error", "상태 변경에 실패했습니다. 문의 부탁드립니다.");
 			return "redirect:/todo/list?page=1&view=all";
 		}
-		logger.info("투두 완료 - 성공:"+idx);
+		logger.info("Todo 완료 - 성공:"+idx);
 		String orgPath=(String)req.getHeader("Referer");
 		session.setAttribute("msg", "완료 상태가 변경되었습니다.");
 		

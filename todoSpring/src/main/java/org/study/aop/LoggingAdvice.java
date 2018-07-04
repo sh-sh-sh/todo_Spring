@@ -6,24 +6,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+
+//로깅을 위한 클래스
 @Aspect
 @Component
 public class LoggingAdvice {
 	private static final Logger logger = LoggerFactory.getLogger(LoggingAdvice.class);
 	
-//	@After("execution(* org.study.service.*.*(..))")
-//	public void startLog(JoinPoint jp) {
-//		logger.info("startLog ----->");
-//		 String sg=jp.getSignature().toShortString();
-//		if(!sg.contains("get")) {
-//			logger.info(jp.getSignature().toShortString());
-//		}
-////		logger.info(Arrays.toString(jp.getArgs()));
-//	}
-	
+	//service 패키지 안에 있는 메서드가 실행되면 실행하기 전후 시간을 비교해 걸린 시간을 로그에 출력한다.
 	@Around("execution(* org.study.service.*.*(..))")
 	public Object readLog(ProceedingJoinPoint pjp) throws Throwable {
-//		logger.info("startLog ----->");
 		long startTime = System.currentTimeMillis();
 		try {
 			Object obj = pjp.proceed();
