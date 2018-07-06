@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!--  security none -->
+	<beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+			<beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
+			<beans:property name="url" value="jdbc:mysql://192.168.0.213/todo_db?characterEncoding=utf8" />
+			<beans:property name="username" value="sh" />
+			<beans:property name="password" value="12341234" />
+	</beans:bean>
+	
+	
+		<http pattern="/resources/**" security="none"></http>
+		<http pattern="/js/**" security="none"></http>
+		<http pattern="/css/**" security="none"></http>
+		<http pattern="/font/**" security="none"></http>
+		<http pattern="/fonts/**" security="none"></http>
+		
+		<http pattern="/**/js/**" security="none"></http>
+		<http pattern="/**/css/**" security="none"></http>
+		<http pattern="/**/font/**" security="none"></http>
+		<http pattern="/**/fonts/**" security="none"></http>
+		
+		
+	<!-- bcrypt password -->
+	<beans:bean id="encoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+		<beans:constructor-arg name="strength" value="11" />
+	</beans:bean>
+	
+	
+	<http auto-config="true" use-expressions="true">
+		
+		<intercept-url pattern="/" access="permitAll" />
+		<intercept-url pattern="/login" access="permitAll" />
+		<intercept-url pattern="/tryLogin" access="permitAll" />
+		
+		<intercept-url pattern="/user/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')" />
+		<intercept-url pattern="/todo/**" access="hasRole('ROLE_USER')" />
+		
+		<form-login login-page="/login" 
+					default-target-url="/user/welcome"
+   					username-parameter="id"
+   					password-parameter="password"
+   					authentication-failure-url="/login/error"/>
+   		<csrf/>
+   		
+   		<session-management>
+			<concurrency-control max-sessions="1" expired-url="/login"/>
+		</session-management>
+   		
+		<logout invalidate-session="true" 
+		delete-cookies="JSESSIONID,SPRING_SECURITY_REMEMBER_ME_COOKIE" 
+		logout-url="/user/logout" logout-success-url="/logout/go" />
+		
+		<remember-me key="nieeKey" token-validity-seconds="604800"/><!--일주일-->
+	</http>
+
+<authentication-manager>	
+	<authentication-provider>
+			<password-encoder ref="encoder"></password-encoder>
+			<jdbc-user-service data-source-ref="dataSource"
+				users-by-username-query="select id, password, enabled from todo_user where id = ?"
+				authorities-by-username-query="select id, authority from todo_user where id = ?" />
+		</authentication-provider>
+</authentication-manager>	
+	
+</beans:beans>
