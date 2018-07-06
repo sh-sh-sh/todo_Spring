@@ -1,15 +1,15 @@
 package org.study.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.study.model.UserVO;
 import org.study.persistence.TodoDAO;
 import org.study.persistence.UserDAO;
-import org.study.sec.PasswordAuthentication;
 
 public class UserServiceImpl implements UserService {
 	
 	@Autowired
-	public PasswordAuthentication passAuth;
+    private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
 	@Autowired
 	public UserDAO dao;
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean passwordCheck(String id, String password) {
-		return passAuth.authenticate(password.toCharArray(), dao.getPW(id));
+		return bcryptPasswordEncoder.matches(password, dao.getPW(id));
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void pwHash(UserVO user) {
-		user.setHashedPW(passAuth.hash(user.getPassword().toCharArray()));
+		user.setHashedPW(this.bcryptPasswordEncoder.encode(user.getPassword()));
 	}
 
 	@Override

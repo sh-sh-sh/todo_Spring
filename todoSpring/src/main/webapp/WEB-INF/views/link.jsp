@@ -9,7 +9,19 @@
 <link rel="stylesheet" href="./css/bootstrap.css">
 <script src="./js/bootstrap.min.js"></script>
 <script src="./js/jquery.min.js"></script>
+
+<script>
+	function logout(){
+		document.getElementById("logoutForm").submit();
+	}
+</script>
+
 <body>
+
+<form action="/user/logout" method="post" id="logoutForm">
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+</form>
+
 	<nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -42,7 +54,7 @@
 	          </ul>
 	        </li>
 			<li><a href="/todo/add">할일 추가</a></li>
-			<li><a href="/user/logout">로그아웃</a></li>
+			<li><a href="javascript:logout()">로그아웃</a></li>
 			<%} %>
           </ul>
         </div><!--/.nav-collapse -->

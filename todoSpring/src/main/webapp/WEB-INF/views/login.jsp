@@ -23,8 +23,8 @@
      </div>
      <div class="content">
         <div class="signin-cont cont">
-          <form action="/tryLogin" method="post" >
-          		<input type='hidden' name="orgPath" value="${orgPath}">
+          <form action="/login" method="post" >
+          	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
           		<%if(id!=null){ %>
                <input type="text" name="id" id="id" class="inpt" required="required" 
                value="<%=id%>" maxlength="20" pattern=".{2,20}">
@@ -36,22 +36,17 @@
                <input type="password" name="password" id="password" class="inpt" 
                required="required" placeholder="비밀번호 입력" maxlength="20" pattern=".{2,20}">
      			<label for="password">비밀번호 입력</label>
-               <input type="checkbox" name="remember" id="remember" class="checkbox">
+               <input type="checkbox" name="_spring_security_remember_me" id="remember" class="checkbox">
                <label for="remember">Remember me</label>
-               <%if(id!=null){%>
-               		<script>
-					$('#remember').prop("checked",true);
-					</script>
-				<%} %>
                <div class="submit-wrap">
                     <input type="submit" value="로그인" class="submit">
                     <a href="#" class="more"></a>
                </div>
-               <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	        </form>
         </div>
         <div class="signup-cont cont">
         <form action="/SignUp" method="post" >
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         	<input type="text" name="id" id="id" class="inpt" required="required" 
         	placeholder="아이디 (2글자 이상 20자 이하)"  maxlength="20" onKeyDown="checkNumber();" 
         	pattern=".{2,20}"/>

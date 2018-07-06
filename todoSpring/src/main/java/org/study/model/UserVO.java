@@ -3,6 +3,7 @@ package org.study.model;
 import org.hibernate.validator.constraints.Email;
 
 public class UserVO {
+	
 	private String id;
 	private String password;
 	private String name;
@@ -12,6 +13,22 @@ public class UserVO {
 	private String hashedPW;
 	private String newPW;
 	private String newPWc;
+	
+	
+	
+	public UserVO() {
+		super();
+		// TODO 자동 생성된 생성자 스텁
+	}
+	
+	public UserVO(String id, String password, String name, String email) {
+		super();
+		this.id = id;
+		this.password = password;
+		this.name = name;
+		this.email = email;
+//		this.hashedPW=passAuth.hash(password.toCharArray());
+	}
 	
 	public String getNewPW() {
 		return newPW;
@@ -28,28 +45,7 @@ public class UserVO {
 	public void setNewPWc(String newPWc) {
 		this.newPWc = newPWc;
 	}
-	
-	
-//	private TodoService service=new TodoDaoImpl();
-	
-	
 
-	public UserVO() {
-		super();
-		// TODO 자동 생성된 생성자 스텁
-	}
-	
-	public UserVO(String id, String password, String name, String email) {
-		super();
-		this.id = id;
-		this.password = password;
-		this.name = name;
-		this.email = email;
-//		this.hashedPW=passAuth.hash(password.toCharArray());
-	}
-	
-	
-	
 	@Override
 	public String toString() {
 		return "UserVO [id=" + id + ", password=" + password + ", name=" + name + ", email=" + email + ", hashedPW="

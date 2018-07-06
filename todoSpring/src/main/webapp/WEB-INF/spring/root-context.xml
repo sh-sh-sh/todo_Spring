@@ -13,9 +13,10 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	
+	<import resource="spring-security.xml"/>
+	
 	<aop:aspectj-autoproxy/>
 	
-	<bean id="passAuth" class="org.study.sec.PasswordAuthentication"/>
 	<bean id="userDAO" class="org.study.persistence.UserDAOImpl"/>
 	<bean id="todoDAO" class="org.study.persistence.TodoDAOImpl"/>
 	<bean id="UserService" class="org.study.service.UserServiceImpl"/>

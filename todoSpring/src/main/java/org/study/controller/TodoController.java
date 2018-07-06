@@ -1,5 +1,6 @@
 package org.study.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,13 +34,14 @@ public class TodoController extends ControllerUtil {
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public String list(HttpSession session,Model model,
 			@RequestParam(value="view",required=false) String view,
-			@RequestParam(value="page",required=false) int page) {
+			@RequestParam(value="page",required=false) int page,
+			Principal prin) {
 		readMsg(session, model);
 		if(view==null) {
 			view="all";
 		}
 		
-		id=getid(session);
+		id=prin.getName();
 		int maxpage=service.maxpage(id, view);
 		model.addAttribute("doneRate",service.doneRate(id, view));
 		model.addAttribute("maxpage",maxpage);
@@ -101,10 +103,10 @@ public class TodoController extends ControllerUtil {
 	
 	
 	@RequestMapping(value = "view", method = RequestMethod.GET)
-	public String view(HttpSession session,Model model,
+	public String view(HttpSession session,Model model,Principal prin,
 			@RequestParam(value="idx",required=true) int idx) {
 		readMsg(session, model);
-		id=getid(session);
+		id=prin.getName();
 		if(!service.isCorrectUser(id, idx)) {
 			logger.error("Todo 접근  - 올바르지 않은 접근:"+id);
 			session.setAttribute("error", "올바르지 않은 접근입니다.");
@@ -120,12 +122,12 @@ public class TodoController extends ControllerUtil {
 	
 	
 	@RequestMapping(value = "done", method = RequestMethod.GET)
-	public String done(HttpSession session,Model model,
+	public String done(HttpSession session,Model model,Principal prin,
 			@RequestParam(value="idx",required=true) int idx,
 			@RequestParam(value="done",required=true) boolean done,
 			HttpServletRequest req) {
 		
-		id=getid(session);
+		id=prin.getName();
 		
 		if(!service.isCorrectUser(id, idx)) {
 			logger.error("Todo 완료 - 올바르지 않은 접근:"+idx);
@@ -149,11 +151,11 @@ public class TodoController extends ControllerUtil {
 	
 	
 	@RequestMapping(value = "edit", method = RequestMethod.GET)
-	public String edit(HttpSession session,Model model,
+	public String edit(HttpSession session,Model model,Principal prin,
 			@RequestParam(value="idx",required=true) int idx) {
 		
 		readMsg(session,model);
-		id=getid(session);
+		id=prin.getName();
 		
 		if(!service.isCorrectUser(id, idx)) {
 			logger.error("Todo 수정 - 올바르지 않은 접근:"+id);
@@ -170,7 +172,7 @@ public class TodoController extends ControllerUtil {
 	
 	
 	@RequestMapping(value = "edit/do", method = RequestMethod.POST)
-	public String doEdit(HttpSession session,Model model,@Valid TodoVO todo,BindingResult result) {
+	public String doEdit(HttpSession session,Model model,@Valid TodoVO todo,BindingResult result,Principal prin) {
 		
 		if(result.hasErrors()) {
 			List<ObjectError> list=result.getAllErrors();
@@ -181,7 +183,7 @@ public class TodoController extends ControllerUtil {
 			return "redirect:/todo/list?page=1&view=all";
 	      }
 		
-		id=getid(session);
+		id=prin.getName();
 		
 		if(!service.isCorrectUser(id, todo.getIdx())) {
 			logger.error("Todo 수정 2 - 권한 없음:"+id+","+todo.getIdx());
@@ -221,8 +223,8 @@ public class TodoController extends ControllerUtil {
 	
 	
 	@RequestMapping(value = "add/do", method = RequestMethod.POST)
-	public String doAdd(HttpSession session,Model model,TodoVO todo) {
-		todo.setUser_id(getid(session));
+	public String doAdd(HttpSession session,Model model,TodoVO todo,Principal prin) {
+		todo.setUser_id(prin.getName());
 		
 		if(!service.Validation(todo)) {
 			logger.error("Todo 추가 - 사용할 수 없는 문자 포함:"+todo.getUser_id());
@@ -249,9 +251,9 @@ public class TodoController extends ControllerUtil {
 	
 	
 	@RequestMapping(value = "del", method = RequestMethod.GET)
-	public String del(HttpSession session,Model model,
+	public String del(HttpSession session,Model model,Principal prin,
 			@RequestParam(value="idx",required=true) int idx) {
-		id=getid(session);
+		id=prin.getName();
 		
 		if(!service.isCorrectUser(id, idx)) {
 			logger.error("Todo 삭제 - 권한 없음:"+id);

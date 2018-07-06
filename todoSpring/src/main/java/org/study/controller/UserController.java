@@ -1,10 +1,8 @@
 package org.study.controller;
 
-import java.io.UnsupportedEncodingException;
+import java.security.Principal;
 import java.util.List;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -32,14 +30,13 @@ public class UserController extends ControllerUtil {
 	String id;
 	
 	
-	@RequestMapping(value = "/user/logout", method = RequestMethod.GET)
-	public String logout(HttpSession session,Model model) {
-		if(session.getAttribute("userid")==null) {
-			logger.error(" 로그아웃 실패-로그인 되어있지 않음");
-			model.addAttribute("error", "먼저 로그인을 하세요");
-			return "login";
-		}
-		session.removeAttribute("userid");
+	@RequestMapping(value = "/user/logout", method = RequestMethod.POST)
+	public void logout(HttpSession session,Model model) {
+		
+	}
+	
+	@RequestMapping(value = "/logout/go", method = RequestMethod.GET)
+	public String Afterlogout(HttpSession session,Model model) {
 		session.setAttribute("msg", "로그아웃 되었습니다.");
 		logger.info("로그아웃 성공");
 		return "redirect:/";
@@ -49,9 +46,9 @@ public class UserController extends ControllerUtil {
 	
 	
 	@RequestMapping(value = "/user/edit", method = RequestMethod.GET)
-	public String userEdit(HttpSession session,Model model) {
+	public String userEdit(HttpSession session,Model model,Principal prin) {
 		readMsg(session,model);
-		id=getid(session);
+		id=prin.getName();
 		if(!service.isValidUser(id)) {
 			logger.error(" 프로필 수정 시도 - 존재하지 않는 아이디:"+id);
 			session.setAttribute("error", "존재하지 않는 아이디입니다.");
@@ -65,8 +62,8 @@ public class UserController extends ControllerUtil {
 	
 	
 	@RequestMapping(value = "/user/edit/do", method = RequestMethod.POST)
-	public String doUserEdit(UserVO user,HttpSession session,Model model) {
-		id=getid(session);
+	public String doUserEdit(UserVO user,HttpSession session,Model model,Principal prin) {
+		id=prin.getName();
 		user.setId(id);
 		if(service.passwordCheck(id, user.getPassword())) {//비밀번호 일치 확인
 			if(user.getNewPW().length()>0) {//새 패스워드를 입력했으면
@@ -115,8 +112,8 @@ public class UserController extends ControllerUtil {
 	
 	
 	@RequestMapping(value = "/user/del/do", method = RequestMethod.POST)
-	public String doUserDel(@RequestParam("password") String password, HttpSession session) {
-		id=getid(session);
+	public String doUserDel(@RequestParam("password") String password, HttpSession session,Principal prin) {
+		id=prin.getName();
 		if(!service.passwordCheck(id, password)) {
 			logger.error("탈퇴 - 비밀번호 불일치");
 			session.setAttribute("error", "비밀번호가 일치하지 않습니다.");
@@ -137,44 +134,49 @@ public class UserController extends ControllerUtil {
 	
 	
 	
-	@RequestMapping(value = "/tryLogin", method = RequestMethod.POST)
-	public String tryLogin(UserVO user,
-			@RequestParam(value="remember",required=false) String remember,
-			@RequestParam(value="orgPath",required=false) String orgPath,
-			Model model,HttpServletResponse response,HttpSession session) 
-					throws UnsupportedEncodingException {
-		logger.info("try Login:"+user.getId());
-		if(!service.isValidUser(user.getId())) {
-			logger.error(" 로그인 시도 - 존재하지 않는 아이디:"+user.getId());
-			session.setAttribute("error", "존재하지 않는 아이디입니다.");
-			return "redirect:/login";
-		}
-		if(!service.passwordCheck(user.getId(),user.getPassword())) {
-			logger.error(" 로그인 시도 - 패스워드 불일치:"+user.getId());
-			session.setAttribute("error", "패스워드가 일치하지 않습니다.");
-			return "redirect:/login";
-		}
-//		if(orgPath.equals("")) {
+//	@RequestMapping(value = "/tryLogin", method = RequestMethod.POST)
+//	public String tryLogin(UserVO user,
+//			@RequestParam(value="remember",required=false) String remember,
+//			@RequestParam(value="orgPath",required=false) String orgPath,
+//			Model model,HttpServletResponse response,HttpSession session) 
+//					throws UnsupportedEncodingException {
+//		logger.info("try Login:"+user.getId());
+//		if(!service.isValidUser(user.getId())) {
+//			logger.error(" 로그인 시도 - 존재하지 않는 아이디:"+user.getId());
+//			session.setAttribute("error", "존재하지 않는 아이디입니다.");
+//			return "redirect:/login";
 //		}
-		session.setAttribute("userid", user.getId());
-		session.setAttribute("name", service.getUser(user.getId()).getName());
-		
-		Cookie cookie= null;
-		if(remember!=null) {//remember에 체크했을 경우 쿠키에 아이디 저장
-			cookie=new Cookie("id",java.net.URLEncoder.encode(user.getId(), "UTF-8"));
-			cookie.setMaxAge(60*60*24*30);//유효기간 한달(초*분*시*일)
-			response.addCookie(cookie);
-		}else {//체크하지 않았을 경우 쿠키 무효화
-			cookie=new Cookie("id",null);
-			cookie.setMaxAge(0);
-			response.addCookie(cookie);
-		}
-		logger.info("로그인 성공:"+user.getId());
-		return "redirect:/welcome";
+//		if(!service.passwordCheck(user.getId(),user.getPassword())) {
+//			logger.error(" 로그인 시도 - 패스워드 불일치:"+user.getId());
+//			session.setAttribute("error", "패스워드가 일치하지 않습니다.");
+//			return "redirect:/login";
+//		}
+////		if(orgPath.equals("")) {
+////		}
+//		session.setAttribute("userid", user.getId());
+//		session.setAttribute("name", service.getUser(user.getId()).getName());
+//		
+//		Cookie cookie= null;
+//		if(remember!=null) {//remember에 체크했을 경우 쿠키에 아이디 저장
+//			cookie=new Cookie("id",java.net.URLEncoder.encode(user.getId(), "UTF-8"));
+//			cookie.setMaxAge(60*60*24*30);//유효기간 한달(초*분*시*일)
+//			response.addCookie(cookie);
+//		}else {//체크하지 않았을 경우 쿠키 무효화
+//			cookie=new Cookie("id",null);
+//			cookie.setMaxAge(0);
+//			response.addCookie(cookie);
+//		}
+//		logger.info("로그인 성공:"+user.getId());
+//		return "redirect:/welcome";
+//	}
+	
+	@RequestMapping("/tryLogin")
+	public void tryLogin() {
+		logger.info("hello login");
 	}
 	
 	
-	@RequestMapping(value = "/welcome", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/welcome", method = RequestMethod.GET)
 	public String welcome(HttpSession session,Model model) {
 		model.addAttribute("name", (String)session.getAttribute("name"));
 		session.removeAttribute("name");
@@ -221,10 +223,10 @@ public class UserController extends ControllerUtil {
 	
 	
 	@RequestMapping(value = "/user/Profile", method = RequestMethod.GET)
-	public String login(HttpSession session,Model model) {
+	public String profile(HttpSession session,Model model,Principal prin) {
 		readMsg(session,model);
 //		logger.info("go Profile");
-		id=getid(session);
+		id=prin.getName();
 		if(!service.isValidUser(id)) {//세션에 저장된 아이디가 존재하지 않을 경우
 			logger.error(" 프로필 접근 실패:"+id);
 			return"index";

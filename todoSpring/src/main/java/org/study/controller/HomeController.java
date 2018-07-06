@@ -30,19 +30,16 @@ public class HomeController extends ControllerUtil {
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(HttpSession session,Model model,HttpServletRequest req) {
 		readMsg(session, model);
-		
-		//저장된 쿠키가 있으면 아이디를 읽어 모델에 쓴다.
-		Cookie[] cookie= req.getCookies();
-		String id=null;
-		if(cookie!=null){
-			for(int i=0;i<cookie.length;i++){
-				if(cookie[i].getName().equals("id")){
-					id=cookie[i].getValue();
-					model.addAttribute("id", id);
-				}
-			}
-		}
 		return "login";
+	}
+	
+	@RequestMapping(value = "/login/error", method = RequestMethod.GET)
+	public String loginError(HttpSession session,Model model,HttpServletRequest req) {
+		readMsg(session, model);
+		
+		session.setAttribute("error", "아이디 또는 비밀번호가 올바르지 않습니다.");
+		
+		return "redirect:/login";
 	}
 	
 }
