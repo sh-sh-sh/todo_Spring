@@ -34,6 +34,7 @@ max-width:300px;
 			<font color="blue">${msg}</font>
 	<div class="wrap">
 	<form action="/user/edit/do" method="post">  
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		<table class="table table-hover">
 			<tr>
 				<td>이름 : </td><td>

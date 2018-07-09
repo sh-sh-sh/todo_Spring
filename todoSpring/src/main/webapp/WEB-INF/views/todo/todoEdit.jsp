@@ -36,6 +36,7 @@ margin:auto;}
 		<font color="blue">${msg}</font>
 			<h1 class="ha">할 일 수정</h1>
 		<form action="/todo/edit/do" method="post">  
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		<input type='hidden' name='idx' value='<%=todo.getIdx()%>'>
 		<div class="wrap">
 			<table class="table table-hover">

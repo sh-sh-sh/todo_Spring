@@ -59,9 +59,14 @@
 	<select id="listMonth" resultType="org.study.model.TodoVO">
 		<![CDATA[
 		SELECT *, (select td.name from todo_category td where td.cat_id=category) as cate_name FROM todo 
-		WHERE YEAR(start_date) = YEAR(now()) AND YEAR(target_date) = YEAR(now()) 
-		AND MONTH(start_date) <= MONTH(now()) 
-		AND MONTH(target_date) >= MONTH(now()) 
+		WHERE 
+		((YEAR(start_date) = YEAR(now()) 
+		AND MONTH(start_date) <= MONTH(now()))
+        OR YEAR(start_date) < YEAR(now()))
+		AND
+        ((YEAR(target_date) = YEAR(now()) 
+		AND MONTH(target_date) >= MONTH(now()))
+        OR YEAR(target_date) > YEAR(now()))
 		AND user_id = #{user_id} limit #{page},10
 		]]>
 	</select>
@@ -110,10 +115,14 @@
 	
 	<select id="maxpageMonth" resultType="int">
 		<![CDATA[
-		SELECT count(*) FROM todo WHERE YEAR(start_date) = YEAR(now()) 
-		AND YEAR(target_date) = YEAR(now()) 
-		AND MONTH(start_date) <= MONTH(now()) 
-		AND MONTH(target_date) >= MONTH(now()) 
+		SELECT count(*) FROM todo WHERE
+		((YEAR(start_date) = YEAR(now()) 
+		AND MONTH(start_date) <= MONTH(now()))
+        OR YEAR(start_date) < YEAR(now()))
+		AND
+        ((YEAR(target_date) = YEAR(now()) 
+		AND MONTH(target_date) >= MONTH(now()))
+        OR YEAR(target_date) > YEAR(now()))
 		AND user_id = #{id}
 		]]>
 	</select>
@@ -143,7 +152,8 @@
 	
 	<select id="doneRateToday" resultType="int">
 		<![CDATA[
-		SELECT ROUND(
+		SELECT COALESCE(
+		ROUND(
 		(SELECT count(*) FROM todo WHERE done=true 
 		AND DATE(start_date) <= DATE(NOW()) 
 		AND DATE(target_date) >= DATE(NOW()) 
@@ -152,13 +162,15 @@
 		(SELECT count(*) FROM todo WHERE 
 		DATE(start_date) <= DATE(NOW()) 
 		AND DATE(target_date) >= DATE(NOW()) AND user_id =#{id})) 
+		,0)
 		AS result
 		]]>
 	</select>
 	
 	<select id="doneRateWeek" resultType="int">
 		<![CDATA[
-		SELECT ROUND(
+		SELECT COALESCE(
+		ROUND(
 		(SELECT count(*) FROM todo WHERE done=true AND 
 		YEARWEEK(DATE(start_date+interval -1 day)) <= YEARWEEK(DATE(now()+interval -1 day)) 
 		AND YEARWEEK(DATE(target_date+interval -1 day)) >= YEARWEEK(DATE(now()+interval -1 day)) 
@@ -168,13 +180,15 @@
 		YEARWEEK(DATE(start_date+interval -1 day)) <= YEARWEEK(DATE(now()+interval -1 day)) 
 		AND YEARWEEK(DATE(target_date+interval -1 day)) >= YEARWEEK(DATE(now()+interval -1 day)) 
 		AND user_id = #{id})) 
+		,0)
 		AS result
 		]]>
 	</select>
 	
 	<select id="doneRateMonth" resultType="int">
 		<![CDATA[
-		SELECT ROUND(
+		SELECT COALESCE(
+		ROUND(
 		(SELECT count(*) FROM todo WHERE done=true 
 		AND YEAR(start_date) = YEAR(now()) 
 		AND YEAR(target_date) = YEAR(now()) 
@@ -188,15 +202,18 @@
 		AND MONTH(start_date) <= MONTH(now()) 
 		AND MONTH(target_date) >= MONTH(now()) 
 		AND user_id = #{id}))
+		,0)
 		AS result
 		]]>
 	</select>
 	
 	<select id="doneRateAll" resultType="int">
-		SELECT ROUND(
+		SELECT COALESCE(
+		ROUND(
 		(SELECT count(*) FROM todo WHERE done=true AND user_id = #{id})
 		*100/
 		(SELECT count(*) FROM todo WHERE user_id = #{id}))
+		,0)
 		 AS result
 	</select>
 	

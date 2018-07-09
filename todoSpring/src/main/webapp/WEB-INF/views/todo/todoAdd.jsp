@@ -32,6 +32,7 @@ margin:auto;}
 			<font color="red">${error}</font>
 			<font color="blue">${msg}</font>
 		<form action="/todo/add/do" method="post">  
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		<div class="wrap">
 			<table class="table table-hover">
 				<tr>

@@ -12,32 +12,28 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-public class HomeController extends ControllerUtil {
+public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String index(Locale locale,HttpSession session,Model model) {
+	public String index(Locale locale) {
 		logger.info("새 접속 - 접속 국가 : {}.", locale);
-		
-		readMsg(session, model);
-		
+
 		return "index";
 	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login(HttpSession session,Model model,HttpServletRequest req) {
-		readMsg(session, model);
+	public String login() {
 		return "login";
 	}
 	
 	@RequestMapping(value = "/login/error", method = RequestMethod.GET)
-	public String loginError(HttpSession session,Model model,HttpServletRequest req) {
-		readMsg(session, model);
-		
-		session.setAttribute("error", "아이디 또는 비밀번호가 올바르지 않습니다.");
+	public String loginError(RedirectAttributes rttr) {
+		rttr.addFlashAttribute("error", "아이디 또는 비밀번호가 올바르지 않습니다.");
 		
 		return "redirect:/login";
 	}

@@ -27,6 +27,7 @@ margin:auto;
 			<h1 class="ha">정말 탈퇴하시겠습니까? ;(</h1>
 					<h2>탈퇴하려면 비밀번호를 입력하세요.</h2>
 					<form action="/user/del/do" method="post">  
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					<p>
 					<div class="ho">
 					<input type='password' required="required" 

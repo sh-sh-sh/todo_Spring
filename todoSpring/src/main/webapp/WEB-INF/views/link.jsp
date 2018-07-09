@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -36,9 +37,10 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li><a href="/">Home</a></li>
-			<%if(session.getAttribute("userid")==null){%>
+			<sec:authorize access="isAnonymous()">
 			<li><a href="/login">로그인</a></li>
-			<%}else{%>
+			</sec:authorize>
+			<sec:authorize access="isAuthenticated()">
 			<li><a href="/user/Profile">프로필</a></li>
 			<li class="dropdown">
 	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">할일 보기<span class="caret"></span></a>
@@ -55,7 +57,7 @@
 	        </li>
 			<li><a href="/todo/add">할일 추가</a></li>
 			<li><a href="javascript:logout()">로그아웃</a></li>
-			<%} %>
+			</sec:authorize>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
